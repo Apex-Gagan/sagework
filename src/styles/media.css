@@ -33,10 +33,6 @@
 .hhero .d1{font-size:clamp(2.6rem,5.6vw,5.9rem)}
 .hhero .lede{margin:24px 0 0}
 .hhero .ul{color:#fff}
-.hhero-domains{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
-.chipd{padding:10px 16px;border-radius:999px;font-size:.84rem;font-weight:500;color:#fff;background:rgba(12,13,11,.34);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;gap:8px;align-items:center;transition:background .6s,color .6s,transform .6s var(--ease)}
-.chipd.on{background:rgba(255,255,255,.92);color:var(--ink);transform:translateX(-10px)}
-.chipd b{width:9px;height:9px;border-radius:50%}
 
 /* founder: the name stands in the light, then fills as the subject turns */
 .fhero .vhero-scrim{background:linear-gradient(0deg,rgba(12,13,11,.72) 0%,rgba(12,13,11,.18) 34%,rgba(12,13,11,0) 60%),linear-gradient(90deg,rgba(40,34,8,.3) 0%,rgba(40,34,8,.12) 40%,rgba(40,34,8,.1) 100%)}
@@ -90,9 +86,6 @@
 
 @media (max-width:860px){
   .hhero .vhero-scrim{background:linear-gradient(0deg,rgba(12,13,11,.86) 0%,rgba(12,13,11,.58) 55%,rgba(12,13,11,.12) 100%)}
-  .hhero-domains{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px}
-  .chipd{padding:8px 12px;font-size:.78rem}
-  .chipd.on{transform:none}
 }
 @media (max-width:700px){
   .fname{font-size:27vw}
@@ -121,7 +114,4 @@
 .gut.static .ganat{height:min(88vh,900px)}
 @media (max-width:860px){.ganat{height:46vh}.gut.static .ganat{height:70vh}.ganat-credit{margin-top:4px;font-size:.62rem}.ganat-label{font-size:.72rem;padding:5px 10px}}
 
-/* five senses: real footage */
-.svid{border-radius:28px;min-height:clamp(420px,48vw,640px);isolation:isolate}
-@media (max-width:900px){.svid{order:-1;min-height:0;aspect-ratio:5/4}}
 @media (max-width:600px){.ganat{height:35vh}.gut.static .ganat{height:70vh}}

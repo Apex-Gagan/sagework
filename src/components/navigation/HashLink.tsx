@@ -1,21 +1,25 @@
 import type { AnchorHTMLAttributes, MouseEvent } from 'react';
 import { useNavigation, type NavigationIntent } from '../../routing/NavigationContext';
-import type { ViewName } from '../../routing/views';
+import { routeHash, type ViewName } from '../../routing/views';
 
 interface HashLinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick'> {
   to: ViewName;
+  /** A section within the page. */
+  section?: string;
   intent?: NavigationIntent;
+  onNavigate?: () => void;
 }
 
-export function HashLink({ to, intent, children, ...rest }: HashLinkProps) {
+export function HashLink({ to, section, intent, onNavigate, children, ...rest }: HashLinkProps) {
   const { revisit, setIntent } = useNavigation();
-  const href = `#${to}`;
+  const href = routeHash({ view: to, section });
 
   const handleClick = (event: MouseEvent) => {
     if (intent) setIntent(intent);
-    // The browser fires no hashchange when the link points at the current page.
+    onNavigate?.();
+    // The browser fires no hashchange when the link points at the current address.
     const { hash } = window.location;
-    if (href === hash || (to === 'home' && !hash)) {
+    if (href === hash || (to === 'home' && !section && !hash)) {
       event.preventDefault();
       revisit();
     }

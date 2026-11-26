@@ -3,15 +3,16 @@ import type { ViewName } from './views';
 
 /** Something the destination page should do on arrival. */
 export interface NavigationIntent {
-  /** Service to preselect in the contact form. */
+  /** Enquiry type to preselect in the contact form. */
   enquiry?: string;
 }
 
 export interface Navigation {
   view: ViewName;
+  section?: string;
   /** Increments on every navigation, including re-selecting the current page. */
   visit: number;
-  /** Re-runs arrival behaviour (scroll to top, close menu) for the current page. */
+  /** Re-runs arrival behaviour (scroll into place, close menus) for the current address. */
   revisit: () => void;
   setIntent: (intent: NavigationIntent) => void;
   /** Reads an intent once, clearing it. */

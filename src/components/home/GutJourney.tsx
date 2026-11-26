@@ -58,7 +58,7 @@ export function GutJourney() {
   // The 3D code and models are heavy, so they wait until the page has settled, or until the
   // visitor is a screen away.
   useEffect(() => {
-    if (wanted || view !== 'home') return;
+    if (wanted || view !== 'knowledge') return;
     const load = () => setWanted(true);
     const observer = new IntersectionObserver(([entry]) => entry.isIntersecting && load(), {
       rootMargin: '100% 0px',
@@ -185,7 +185,7 @@ export function GutJourney() {
                   <h3 className="d3">{title}</h3>
                   <p className="grey">{body}</p>
                   {link && (
-                    <HashLink to="research" className="ul">
+                    <HashLink to="knowledge" section="white-papers" className="ul">
                       {`${link} `}
                       <span className="arr">→</span>
                     </HashLink>

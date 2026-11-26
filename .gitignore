@@ -4,3 +4,6 @@ dist
 .DS_Store
 Thumbs.db
 .env*
+
+# Client photos and videos kept out of the build until each section is re-supplied
+media-archive/
