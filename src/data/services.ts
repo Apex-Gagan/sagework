@@ -1,15 +1,20 @@
 export interface Service {
   name: string;
-  /** Short description: home accordion and Discover grid. */
+  /** Short description: home page overview. */
   summary: string;
-  /** Longer description: Work with Sagework cards. */
+  /** Longer description: What We Do. */
   detail: string;
   outputs: string;
 }
 
+/**
+ * The five services agreed in the 26 Nov 2026 deck. Copy is the existing wording, merged where two
+ * former services became one (Strategic Advisory + Board Strategy). For the content creator to
+ * tighten.
+ */
 export const SERVICES: Service[] = [
   {
-    name: 'Consulting',
+    name: 'Consulting & Systems Design',
     summary:
       'Evidence-led consulting for healthcare, workplaces, schools, hospitality, buildings and other settings responsible for the health and experience of the people they serve.',
     detail:
@@ -18,16 +23,16 @@ export const SERVICES: Service[] = [
       'A project brief, design recommendations, a programme or environment strategy, or an implementation roadmap.',
   },
   {
-    name: 'Strategic Advisory',
+    name: 'Strategic & Board Advisory',
     summary:
-      'Direct, ongoing counsel for leaders making complex decisions across health, wellbeing, human performance and systems design.',
+      'Direct, ongoing counsel for leaders and boards making complex decisions across health, wellbeing, human performance, responsible growth and long-term organisational resilience.',
     detail:
-      'For leaders who need ongoing advice as decisions evolve. We act as an independent sounding board on health, wellbeing and human performance, helping you assess options and refine priorities over time.',
+      'For leaders who need ongoing advice as decisions evolve, and for boards deciding on organisational direction, oversight and long-term resilience. We act as an independent sounding board, bringing a human-health and evidence perspective to strategy, innovation and responsible growth.',
     outputs:
-      'Regular advisory discussions, decision briefs, evidence reviews or a phased strategic plan.',
+      'Regular advisory discussions, decision briefs, evidence reviews, a phased strategic plan, a board briefing or a facilitated board strategy discussion.',
   },
   {
-    name: 'Evaluation and Audit',
+    name: 'Assessment, Evaluation & Audit',
     summary:
       'Independent assessment of environments, services and practices through the connected lenses of biology, environment and behaviour, identifying gaps, risks and priorities for action.',
     detail:
@@ -36,7 +41,7 @@ export const SERVICES: Service[] = [
       'A current-state assessment, gap analysis, prioritised action plan or evaluation framework.',
   },
   {
-    name: 'Education and Knowledge',
+    name: 'Education & Knowledge Translation',
     summary:
       'Evidence reviews, white papers, leadership briefings and learning programmes that turn complex science into informed decisions and practical action.',
     detail:
@@ -45,16 +50,7 @@ export const SERVICES: Service[] = [
       'Workshops, talks, leadership briefings, evidence reviews, white papers or learning programmes.',
   },
   {
-    name: 'Board Strategy',
-    summary:
-      'Independent counsel for boards and leadership teams navigating health strategy, responsible growth, innovation and long-term organisational resilience.',
-    detail:
-      'For boards making decisions about organisational direction, oversight and long-term resilience. We bring a human-health and evidence perspective to strategy, innovation and responsible growth, rather than day-to-day project delivery.',
-    outputs:
-      'A board briefing, facilitated board strategy discussion or strategic review of a proposed health initiative.',
-  },
-  {
-    name: 'Investments and Partnerships',
+    name: 'Strategic Partnerships & Innovation',
     summary:
       'Selective strategic collaboration with founders, researchers and organisations developing evidence-led approaches to health, wellbeing and human performance.',
     detail:

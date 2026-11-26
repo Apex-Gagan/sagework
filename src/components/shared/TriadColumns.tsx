@@ -1,5 +1,6 @@
+import type { MediaId } from '../../data/media';
 import { TRIAD } from '../../data/triad';
-import { LoopVideo } from './LoopVideo';
+import { Media } from './Media';
 
 const CIRCLES = [
   [17, 15],
@@ -25,12 +26,24 @@ function TriadMark({ active }: { active: number }) {
   );
 }
 
-export function TriadColumns({ variant }: { variant: 'short' | 'long' }) {
+interface TriadColumnsProps {
+  variant: 'short' | 'long';
+  /** Show each domain's photograph above it. */
+  media?: boolean;
+}
+
+export function TriadColumns({ variant, media = false }: TriadColumnsProps) {
   return (
     <div className="tcols">
       {TRIAD.map((domain, i) => (
         <div className="tcol" key={domain.name}>
-          <LoopVideo className="tvid" src={domain.video} poster={domain.poster} />
+          {media && (
+            <Media
+              id={`triad-${domain.name.toLowerCase()}` as MediaId}
+              className="tvid"
+              sized={false}
+            />
+          )}
           <TriadMark active={i} />
           <span className="tn">{`0${i + 1}`}</span>
           <h3 className="d3">{domain.name}</h3>

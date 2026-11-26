@@ -2,25 +2,17 @@ import { EnquiryForm } from '../components/contact/EnquiryForm';
 import { View } from '../components/layout/View';
 import { HashLink } from '../components/navigation/HashLink';
 import { CopyButton } from '../components/shared/CopyButton';
+import { PageHero } from '../components/shared/PageHero';
 
 export function ContactPage() {
   return (
     <View name="contact">
-      <div className="hero" style={{ paddingBottom: '40px' }}>
-        <div className="wrap two" style={{ alignItems: 'end', rowGap: 0 }}>
-          <div style={{ gridColumn: '1 / span 9' }}>
-            <p className="label">Contact us</p>
-            <h1 className="d1">Start a conversation with Sagework.</h1>
-          </div>
-          <div style={{ gridColumn: '1 / span 6' }}>
-            <p className="lede">
-              Have a project, challenge or collaboration in mind? Tell us what you are working on
-              and where Sagework could help. We welcome enquiries from leaders, institutions,
-              founders, researchers and organisations.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHero
+        label="Contact us"
+        title="Start a conversation with Sagework."
+        lede="Have a project, challenge or collaboration in mind? Tell us what you are working on and where Sagework could help. We welcome enquiries from leaders, institutions, founders, researchers and organisations."
+        compact
+      />
       <div className="sec" style={{ paddingTop: '20px' }}>
         <div className="wrap cgrid">
           <div className="formcard">
@@ -47,14 +39,14 @@ export function ContactPage() {
             <div>
               <p className="grey">
                 For public health education, explore Dr Gutsy. For publications and supporting
-                sources, visit Research &amp; evidence.
+                sources, visit Knowledge.
               </p>
               <div className="row">
-                <HashLink to="gutsy" className="ul">
+                <HashLink to="dr-gutsy" className="ul">
                   Explore Dr Gutsy <span className="arr">→</span>
                 </HashLink>
-                <HashLink to="research" className="ul">
-                  Research &amp; evidence <span className="arr">→</span>
+                <HashLink to="knowledge" className="ul">
+                  Knowledge <span className="arr">→</span>
                 </HashLink>
               </div>
             </div>

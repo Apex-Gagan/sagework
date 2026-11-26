@@ -1,51 +1,80 @@
+import { SHOW_PENDING_CONTENT } from '../../config/launch';
+import type { ViewName } from '../../routing/views';
 import { HashLink } from '../navigation/HashLink';
+
+interface FooterLink {
+  label: string;
+  to: ViewName;
+  section?: string;
+  pending?: boolean;
+}
+
+/** Quick links, as set out in the 26 Nov 2026 deck. */
+const QUICK_LINKS: { title: string; links: FooterLink[] }[] = [
+  {
+    title: 'Sagework',
+    links: [
+      { label: 'About', to: 'about' },
+      { label: 'Founder', to: 'about', section: 'founder' },
+      { label: 'Our Approach', to: 'approach' },
+    ],
+  },
+  {
+    title: 'What we do',
+    links: [
+      { label: 'Services', to: 'what-we-do', section: 'services' },
+      { label: 'Sectors', to: 'what-we-do', section: 'sectors' },
+      { label: 'Partnerships', to: 'what-we-do', section: 'engagement' },
+    ],
+  },
+  {
+    title: 'Knowledge',
+    links: [
+      { label: 'Research', to: 'knowledge', section: 'research' },
+      { label: 'White Papers', to: 'knowledge', section: 'white-papers' },
+      { label: 'Dr Gutsy', to: 'dr-gutsy' },
+    ],
+  },
+];
+
+const LEGAL: FooterLink[] = [
+  { label: 'Privacy', to: 'privacy', pending: true },
+  { label: 'Terms', to: 'terms', pending: true },
+  { label: 'Disclaimer', to: 'disclaimer', pending: true },
+  { label: 'Sitemap', to: 'sitemap' },
+];
+
+const shown = (link: FooterLink) => SHOW_PENDING_CONTENT || !link.pending;
 
 export function Footer() {
   return (
     <footer>
       <div className="wrap">
-        <div className="fgrid">
+        <div className="fgrid fgrid-5">
           <div>
             <p className="d3" style={{ maxWidth: '18ch' }}>
               Built on Biology. Integrated Through Systems. Scaled for Human Potential.
             </p>
           </div>
-          <div>
-            <h5>Sagework</h5>
-            <ul>
-              <li>
-                <HashLink to="discover">Discover Sagework</HashLink>
-              </li>
-              <li>
-                <HashLink to="founder">Founder</HashLink>
-              </li>
-              <li>
-                <HashLink to="work">Work with Sagework</HashLink>
-              </li>
-              <li>
-                <HashLink to="contact">Contact us</HashLink>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h5>Knowledge</h5>
-            <ul>
-              <li>
-                <HashLink to="senses">The Five Senses</HashLink>
-              </li>
-              <li>
-                <HashLink to="gutsy">Dr Gutsy</HashLink>
-              </li>
-              <li>
-                <HashLink to="research">Research &amp; evidence</HashLink>
-              </li>
-            </ul>
-          </div>
+          {QUICK_LINKS.map(({ title, links }) => (
+            <div key={title}>
+              <h5>{title}</h5>
+              <ul>
+                {links.map(({ label, to, section }) => (
+                  <li key={label}>
+                    <HashLink to={to} section={section}>
+                      {label}
+                    </HashLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
           <div>
             <h5>Connect</h5>
             <ul>
               <li>
-                <span style={{ userSelect: 'all' }}>connect@sagework.in</span>
+                <a href="mailto:connect@sagework.in">connect@sagework.in</a>
               </li>
               <li>
                 <a
@@ -57,13 +86,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="https://shodhganga.inflibnet.ac.in/handle/10603/677114"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  PhD thesis ↗
-                </a>
+                <HashLink to="contact">Contact Us</HashLink>
               </li>
             </ul>
           </div>
@@ -71,7 +94,13 @@ export function Footer() {
         <div className="bigmark brand-logo" role="img" aria-label="sagework"></div>
         <div className="copy">
           <span>© 2026 Sagework. All rights reserved.</span>
-          <span>Evidence-led advisory and design across biology, environment and behaviour.</span>
+          <nav className="legal" aria-label="Legal">
+            {LEGAL.filter(shown).map(({ label, to }) => (
+              <HashLink key={label} to={to}>
+                {label}
+              </HashLink>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>

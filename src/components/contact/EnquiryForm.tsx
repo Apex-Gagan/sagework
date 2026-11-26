@@ -7,27 +7,23 @@ import {
   type InputHTMLAttributes,
   type ReactNode,
 } from 'react';
+import { SHOW_PENDING_CONTENT } from '../../config/launch';
+import { SERVICES } from '../../data/services';
 import { useNavigation } from '../../routing/NavigationContext';
+import { HashLink } from '../navigation/HashLink';
 
 const EMPTY = { name: '', email: '', org: '', role: '', country: '', type: '', msg: '' };
-type Field = keyof typeof EMPTY;
+type Field = keyof typeof EMPTY | 'consent';
+type TextField = keyof typeof EMPTY;
 
-const REQUIRED: Field[] = ['name', 'email', 'type', 'msg'];
+const REQUIRED: TextField[] = ['name', 'email', 'type', 'msg'];
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-const ENQUIRY_TYPES = [
-  'Consulting',
-  'Strategic Advisory',
-  'Evaluation and Audit',
-  'Education and Knowledge',
-  'Board Strategy',
-  'Investments and Partnerships',
-  'Research collaboration',
-  'Speaking or media',
-  'General enquiry',
-];
+/** Business enquiries name a service, so "Discuss …" links elsewhere can preselect one. */
+const BUSINESS_TYPES = SERVICES.map(({ name }) => name);
+const OTHER_TYPES = ['Research', 'Collaboration', 'Speaking', 'Media', 'General enquiry'];
 
-function validate(field: Field, rawValue: string): string {
+function validate(field: TextField, rawValue: string): string {
   const value = rawValue.trim();
   if (!value) return 'Please complete this field.';
   if (field === 'email' && !EMAIL_PATTERN.test(value)) return 'Please enter a valid email address.';
@@ -66,9 +62,14 @@ function FieldRow({ field, label, required, help, error, full, children }: Field
   );
 }
 
+/**
+ * The enquiry form. Frontend only for now: it validates and shows the confirmation, but nothing
+ * is sent anywhere until a submission service is connected in `submit`.
+ */
 export function EnquiryForm() {
   const { view, visit, takeIntent } = useNavigation();
   const [values, setValues] = useState(EMPTY);
+  const [consent, setConsent] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [sent, setSent] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -94,28 +95,31 @@ export function EnquiryForm() {
     }
   }, [sent]);
 
-  const change = (field: Field, value: string) => {
+  const change = (field: TextField, value: string) => {
     setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: '' }));
   };
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
-    const nextErrors = Object.fromEntries(
+    const nextErrors: Partial<Record<Field, string>> = Object.fromEntries(
       REQUIRED.map((field) => [field, validate(field, values[field])]),
     );
+    nextErrors.consent = consent ? '' : 'Please confirm you have read the Privacy Notice.';
     setErrors(nextErrors);
-    const firstInvalid = REQUIRED.find((field) => nextErrors[field]);
+    const firstInvalid = ([...REQUIRED, 'consent'] as Field[]).find((field) => nextErrors[field]);
     if (firstInvalid) focusField(firstInvalid);
+    // Connect the submission service here. Until then the enquiry stays in the browser.
     else setSent(true);
   };
 
   const startAgain = () => {
     setValues(EMPTY);
+    setConsent(false);
     setSent(false);
   };
 
-  const control = (field: Field) => ({
+  const control = (field: TextField) => ({
     className: 'inp',
     id: `f-${field}`,
     value: values[field],
@@ -123,8 +127,16 @@ export function EnquiryForm() {
     onChange: (event: { target: { value: string } }) => change(field, event.target.value),
   });
 
-  const input = (field: Field, props: InputHTMLAttributes<HTMLInputElement>) => (
+  const input = (field: TextField, props: InputHTMLAttributes<HTMLInputElement>) => (
     <input {...control(field)} {...props} />
+  );
+
+  const privacyNotice = SHOW_PENDING_CONTENT ? (
+    <HashLink to="privacy" className="ul">
+      Privacy Notice
+    </HashLink>
+  ) : (
+    'Privacy Notice'
   );
 
   return (
@@ -166,7 +178,12 @@ export function EnquiryForm() {
           <FieldRow field="type" label="Enquiry type" required error={errors.type}>
             <select {...control('type')} aria-describedby="e-type">
               <option value="">Select one option</option>
-              {ENQUIRY_TYPES.map((type) => (
+              <optgroup label="Business enquiry">
+                {BUSINESS_TYPES.map((type) => (
+                  <option key={type}>{type}</option>
+                ))}
+              </optgroup>
+              {OTHER_TYPES.map((type) => (
                 <option key={type}>{type}</option>
               ))}
             </select>
@@ -185,11 +202,35 @@ export function EnquiryForm() {
               placeholder="What are you working on, who is it for and what would you like to achieve? Include timing if relevant."
             />
           </FieldRow>
+          <div className="fw full consent">
+            <label className="check" htmlFor="f-consent">
+              <input
+                type="checkbox"
+                id="f-consent"
+                checked={consent}
+                aria-invalid={errors.consent ? true : undefined}
+                aria-describedby="e-consent"
+                onChange={(event) => {
+                  setConsent(event.target.checked);
+                  setErrors((current) => ({ ...current, consent: '' }));
+                }}
+              />
+              <span>
+                {
+                  'I agree to Sagework using these details to respond to my enquiry, as described in the '
+                }
+                {privacyNotice}. <span className="req">*</span>
+              </span>
+            </label>
+            <span className="err" id="e-consent">
+              {errors.consent}
+            </span>
+          </div>
         </div>
         <div className="ffoot">
           <p>
-            For information about how your enquiry and contact details are handled, please read our
-            Privacy Notice.
+            For information about how your enquiry and contact details are handled, please read our{' '}
+            {privacyNotice}.
           </p>
           <button className="btn btn-dark" type="submit">
             Send enquiry <span className="arr">→</span>
